@@ -1,0 +1,364 @@
+\documentclass[journal]{IEEEtran}
+
+\ifCLASSINFOpdf
+\else
+   \usepackage[dvips]{graphicx}
+\fi
+\usepackage{url}
+\usepackage{cite}
+\usepackage{amssymb}
+\hyphenation{op-tical net-works semi-conduc-tor}
+\usepackage[cmex10]{amsmath}
+\input ajmacros
+\usepackage{graphicx}
+
+
+\begin{document}
+
+\title{Carrier Frequency Offset Estimation for OCDM with Null Subchirps}
+\author{Sidong Guo,~\IEEEmembership{Student Member,~IEEE}, Yiyin Wang,~\IEEEmembership{Member,~IEEE,}
+      and Xiaoli Ma,~\IEEEmembership{Fellow,~IEEE,}
+\thanks{The work of Yiyin Wang was supported in part by the National Natural Science Foundation of China under Grant 62371282.}}
+
+\markboth{IEEE Signal Processing Letters}
+{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for IEEE Journals}
+\maketitle
+
+\begin{abstract}
+In this paper, we investigate the carrier frequency offset (CFO) estimation problem in orthogonal chirp division multiplexing (OCDM) systems. We propose a transmission scheme by inserting consecutive null subchirps. A CFO estimator is developed to achieve a full acquisition range. 
+%To achieve the theoretical CFO estimation uniqueness of the system, a super-resolution CFO estimator is accordingly developed based on consecutive null subchirps. 
+We further demonstrate that the proposed transmission scheme not only helps to resolve CFO identifiability issues but also enables multipath diversity for OCDM systems. Simulation results corroborate our theoretical findings. 
+\end{abstract}
+
+\begin{IEEEkeywords}
+OCDM, CFO, identifiability, multipath diversity
+\end{IEEEkeywords}
+
+
+\IEEEpeerreviewmaketitle
+
+
+
+\section{Introduction}
+
+\IEEEPARstart{O}{rthogonal} chirp division multiplexing (OCDM) is a multi-carrier modulation scheme that uses orthogonal chirp waveforms to carry information symbols. Compared to the currently dominant modulation scheme, i.e., orthogonal frequency division multiplexing (OFDM), OCDM \cite{ouyang_orthogonal_2016} \cite{ouyang_chirp_2017} is more robust against frequency-selective channels, enjoys lower bit error rate (BER) under various equalization methods, and performs better against burst interferences. Gaining more attentions recently, OCDM also sees increased interests in the research of the multi-user communications, channel and CFO estimation \cite{Omar_multiuser_2019, ouyang_channel_2018, zhang_channel_2022, filomeno_joint_2022, oliveira_channel_2023}.
+
+
+In an OCDM system, the inverse discrete Fresnel transform (IDFnT) is used as the transform kernel to spread each information symbol over the entire bandwidth and the whole symbol block. Thus, OCDM has the double-spreading feature. A non-sinusoidal transform basis may enjoy certain advantages under the influence of CFO. For instance, simulation results in \cite{omar_performance_2021} indicate that OCDM with a minimum mean square error (MMSE) equalizer or decision feedback equalizer (DFE) performs better in terms of BER than OFDM over frequency-selective channels with CFOs at medium signal-to-noise ratios (SNRs). It is also observed in \cite{Trivedi} that chirp-based OFDM systems outperform traditional OFDM with the presence of CFO. 
+%Furthermore, CFO can shift an OFDM subcarrier into the frequency range occupied by another subcarrier \cite{ma_non-data-aided_2001}, while this is not the case for a set of chirp bases. 
+
+The double-spreading property of chirp basis suggests that frequency-selective channels may have different impacts on the receiver's ability to correctly identify a CFO in OCDM compared to OFDM. The identifiability issue is well documented in the case of OFDM\cite{ma_non-data-aided_2001}. Owing to the sinusoidal kernel, OFDM converts a frequency-selective channel into a set of frequency-flat channels. However, channel nulls in the frequency domain can create multiple indistinguishable candidate CFOs in OFDM systems. Thus, it was proposed that judicially placed null subcarriers can restore the CFO identifiability in OFDM \cite{ma_non-data-aided_2001, Ghogho}. The optimality and identifiability of data-aided CFO estimation approaches for OFDM systems with training sequences are explored in \cite{gao, gao2}.
+
+%with a zero-forcing (ZF) equalizer 
+
+On the other hand, some preliminary efforts are directed towards handling the CFO in OCDM. In \cite{zhang_channel_2022}, an excessive cyclic prefix (CP) is used to cross correlate with its counterpart in an OCDM block to estimate the CFO. In \cite{filomeno_joint_2022}, a preamble-type synchronization and channel estimation method is applied to an OCDM system. Although both of them show decent accuracy, they require redundant CPs or symbols. In addition, they still face the identifiability issues for large CFO \cite{zhang_channel_2022,filomeno_joint_2022}. For instance, the CP-based approach \cite{zhang_channel_2022} has a CFO acquisition range as half of the subchirp frequency spacing.  
+
+
+This paper resolves the CFO identifiability issue in OCDM %by proposing a CFO estimator 
+with the help of the proposed transmission scheme, which inserts consecutive null subchirps. A CFO estimator is designed accordingly to achieve a full acquisition range of the CFO. 
+%makes use of null subspace created by consecutive null subschirps to provide a super-resolution CFO estimate. 
+We further prove that the proposed transmission scheme not only helps to address the CFO identifiability issue, but also enables multipath diversity for OCDM systems. Simulation results verify the identifiability of the proposed CFO estimator, and indicate that the BER performances of both the linear equalizers (LEs) and maximum likelihood estimator (MLE) benefit from the enabled multipath diversity.
+
+
+
+
+
+%Section II develops the matrix-vector models of OCDM with null subchirps used for subsequent sections. We show in Section III, the explicit form of proposed CFO estimator and its uniqueness in identifying the correct CFO. The section also demonstrates the insertion of null subchirps enables the multipath diversity collected by both linear and non-linear equalizers to increase. The performance and identifiability claims we obtained are tested and analyzed with simulation in Section IV with Section V concluding the paper. 
+
+Notations: Upper (lower) case bold letters are used to denote matrices (vectors). The notation \([\mathbf{A}]_{m,n}\) indicates the entry at the \(m\)-th row and \(n\)-th column of the matrix \(\mathbf{A}\), whereas \([\mathbf{A}]_{m,:}\) and \([\mathbf{A}]_{:,n}\) denote the $m$-th row and $n$-th column of the matrix \(\mathbf{A}\), respectively. The identity matrix of size \(P\times P\) is denoted by \(\mathbf{I}_P\) and the zero matrix of size \(M\times N\) is \(\mathbf{0}_{M \times N}\). The notations \((\cdot)^{T}\), \((\cdot)^\mathcal{H}\), \((\cdot)^{-1}\), \((\cdot)^\dagger\), and \((\cdot)^\ast\) represent transpose, conjugate transpose, inverse, Moore-Penrose inverse, and element-wise conjugate, respectively. We use \(E[\cdot]\) to denote the expectation with respect to (w.r.t.) all random variables within the brackets. % and \(\mathcal{L}(\mathbf{A})\) is the left null space (LNS) spanned by the matrix \(\mathbf{A}\).  
+
+
+\section{System Model}
+In this section, we derive a baseband equivalent OCDM system model with a CFO and time-invariant frequency-selective channel is assumed with an impulse response \(h(l)\) of order \(L\), where \(l = 0,1,\dots,L\).
+
+Consider the \(i\)-th symbol block that is composed of the information symbol block $\mathbf{s}(i)$ and null symbols. The null symbols in the Fresnel domain correspond to null subchirps in the time domain, which are added consecutively. Thus, the $i$-th symbol block of length $N$ is assembled as $\mathbf{T}_{\rm zp}\mathbf{s}(i)$, where $\mathbf{s}(i)$ is of length $K$ and \(\mathbf{T}_{\rm zp}=[\mathbf{I}_K\quad \mathbf{0}_{K\times (N-K)}]^{T}\).  We further assume that the covariance matrix of $\mathbf{s}(i)$ is given by $\mathbf{R}_{ss}=E[\mathbf{s}(i)\mathbf{s}^\mathcal{H}(i)] = E_s \mathbf{I}_K$, where $E_s$ is the symbol energy. The $i$-th symbol block is modulated with the IDFnT. The resulting time-domain symbol block can be written as \(\mathbf{x}(i)=\mathbf{\Phi}^\mathcal{H}\mathbf{T}_{\rm zp}\mathbf{s}(i)\), where the DFnT matrix $\mathbf{\Phi}$ of size \(N \times N\) is defined as:
+\beqa
+    [\mathbf{\Phi}]_{m,n}&=&\frac{1}{\sqrt{N}}e^{-j\frac{\pi}{4}}\times
+    \begin{cases}
+        e^{j\frac{\pi}{N}(m-n)^2}, & N  = 0\,\,{\rm mod}\,\, 2, \\
+        e^{j\frac{\pi}{N}(m+\frac{1}{2}-n)^2}, &N  = 1\,\, {\rm mod}\,\, 2,
+    \end{cases} \nonumber \\
+    &&\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad m,n = 1,\dots,N.\label{Phi}
+\enqa
+%Matrix $\mathbf{\Phi}$ is a circulant matrix that can be decomposed as $\mathbf{\Phi}=\mathbf{F}^\mathcal{H}\mathbf{\Gamma}\mathbf{F}$, where \(\mathbf{F}\) is the discrete Fourier transform (DFT) matrix characterized by \([\mathbf{F}]_{m,n}=\sqrt{1/N}e^{-j2\pi (m-1)(n-1)/N}\), and \(\mathbf{\Gamma}\) is a diagonal matrix and its diagonal entries are defined as:
+%\beqa
+%    [\mathbf{\Gamma}]_{n,n} &=& 
+%    \begin{cases}
+%        e^{-j \frac{\pi}{N}n^2} & N  = 0\,\,{\rm mod}\,\, 2 \\
+%        e^{-j \frac{\pi}{N}n(n-1)} &N  = 1\,\, {\rm mod}\,\, 2
+%    \end{cases}\nonumber \\
+%    &&\quad\quad\quad\quad\quad\quad\quad n = 1,\dots,N.
+%\enqa
+%The diagonal entries of $\mathbf{\Gamma}$ also construct a Zadoff-Chu (ZC) sequence, whose root index is $1$. 
+The matrix $\mathbf{\Phi}$ is circulant and unitary, i.e., $\mathbf{\Phi}^\mathcal{H}\mathbf{\Phi}=\mathbf{\Phi}\mathbf{\Phi}^\mathcal{H}=\mathbf{I}_N$. Moreover, a cyclic prefix (CP) of length \(L\) is inserted in the time domain before $\mathbf{x}(i)$ to combat multipath delay effects. 
+
+The transmitted OCDM signal goes through a time-invariant frequency-selective channel. At the receiver side, we consider a normalized CFO \(w_o = 2\pi f_oT_s\) in the full range \([-\pi,\pi)\), where \(f_o\) is the CFO in Hz, and $T_s$ is the sampling period. After synchronization and removal of the CP, the received signal block $\mathbf{y}(i)$ of length $N$ is given by %\cite{ma_non-data-aided_2001}:
+\begin{equation} \label{4}
+    \mathbf{y}(i)=e^{j w_o(i(N+L)-N)}\mathbf{D}_N(w_o)\mathbf{H} \mathbf{\Phi}^\mathcal{H}\mathbf{T}_{\rm zp}\mathbf{s}(i)+\mathbf{n}(i),
+\end{equation}
+where \(\mathbf{D}_N(w_o)\) of size \(N \times N\) is the diagonal CFO matrix with the \(n\)-th element in the diagonal given by \(e^{jw_o(n-1)}\), the first column of the circulant channel matrix \(\mathbf{H}\) is given by $\mathbf{h} = [h(0),\dots,h(L), \mathbf{0}_{N-L-1}^{T}]^{T}$, and \(\mathbf{n}(i)\) is the independent and identically distributed (i.i.d.) zero-mean additive white Gaussian noise (AWGN) vector with the covariance matrix $\sigma^2 \mathbf{I}_N$. 
+
+%As the channel matrix \(\mathbf{H}\) is circulant, it can be decomposed as $\mathbf{H} = \mathbf{F}^\mathcal{H}\mathbf{\Lambda}\mathbf{F}$, where $\mathbf{\Lambda} ={\rm diag}(\mathbf{F}\mathbf{h})$ is the frequency domain channel matrix. Taking the decomposition of $\mathbf{H}$ and $\mathbf{\Phi}$ into account, we rewrite $\mathbf{y}(i)$ as follows: 
+%\begin{equation} \label{5}
+%    \mathbf{y}(i)=e^{j w_o(nP+L)}
+%\mathbf{D}_N(w_o)\mathbf{F}^\mathcal{H}\widetilde{\mathbf{\Lambda}}
+%\mathbf{F}{\mathbf{T}}_{\rm zp}{\mathbf{s}}{(i)}+{\mathbf{n}}{(i)}，
+%\end{equation}
+%where $\widetilde{\mathbf{\Lambda}} = \mathbf{\Lambda}\mathbf{\Gamma}^\mathcal{H}$. Note that the channel nulls of $\mathbf{\Lambda}$ have the same impact on $\widetilde{\mathbf{\Lambda}}$, as $\mathbf{\Gamma}$ is full rank. Although $\widetilde{\mathbf{\Lambda}}$ is still a diagonal matrix, there is an additional $\mathbf{F}$ between $\widetilde{\mathbf{\Lambda}}$ and $\mathbf{T}_{\rm zp}$ compared to the structure of the received OFDM block \cite{ma_non-data-aided_2001}. This causes the channel nulls to have different impacts on CFO identifiability of OCDM compared to OFDM, which we will elaborate in later sections.
+
+Once the CFO estimate $\hat{w}_o$ is obtained, we compensate the CFO effect on the received signal block and achieve $\mathbf{r}(i) = e^{-j \hat{w}_o(i(N+L)-N)}\mathbf{D}_N^\mathcal{H}(\hat{w}_o)\mathbf{y}(i)$. Consequently, LEs \big(denoted by $\bf G_{(\cdot)}$\big) or non-linear equalizers can be applied to $\mathbf{r}(i)$. For example, the data symbols can be recovered using LEs as $\hat{\mathbf{s}}(i) = \mathbf{G}_{(\cdot)}\mathbf{r}(i)$, where the zero-forcing (ZF) or MMSE equalizers are given by
+\begin{align}
+\mathbf{G}_{\rm ZF}&=  \mathbf{B}^\dagger ,\label{ZF-FDE}\\
+\mathbf{G}_{\rm MMSE}&=  \mathbf{B}^\mathcal{H} \left( \frac{\sigma^2}{E_{s}}\mathbf{I}_N+\mathbf{B}\mathbf{B}^\mathcal{H} \right)^{-1},\label{MMSE-FDE}
+\end{align}
+with \(\mathbf{B}={\mathbf{H}}\mathbf{\Phi}^\mathcal{H}\mathbf{T}_{\rm zp}\), respectively.
+
+\section{CFO Estimator and its Identifiability}
+
+In this section, we develop an estimator for the true CFO \(w_0\) using the left null space (LNS) of the covariance matrix \(\mathbf{R}_{yy}=E[\mathbf{y}(i)\mathbf{y}^{\mathcal{H}}(i)]\). We first analyze the LNS of ${\mathbf{R}}_{yy}$. %and address the identifiablity issue of the null subspace based CFO estimator. 
+Moreover, a CFO estimator based on the LNS is proposed, and its identifiability is proved.
+
+
+\subsection{The Proposed CFO Estimator}
+
+Based on \eqref{4}, we derive the covariance matrix $\mathbf{R}_{yy}$ as follows, 
+\begin{align}
+%\!\!\!\!\!\!&\!\!&\!\!\!\!
+\mathbf{R}_{yy}%
+= & \mathbf{D}_N(w_0)\mathbf{\Phi}^\mathcal{H}\mathbf{H} \mathbf{T}_{\rm zp}  \mathbf{R}_{ss} \mathbf{T}_{\rm zp}^\mathcal{H} \mathbf{H}^\mathcal{H}\mathbf{\Phi}\mathbf{D}_N^\mathcal{H}(w_0) \nonumber \\&  +  \sigma^2 \mathbf{I}_N, \label{Covariance1} %\nonumber
+\end{align}
+where 
+%\(\sigma_v^2 \mathbf{I}_N\) is the covariance matrices of the noise block \(\mathbf{n}(i)\), and 
+(\ref{Covariance1}) is achieved using the property of circulant matrices \( \mathbf{\mathbf{H}\Phi}^\mathcal{H}=\mathbf{\Phi}^\mathcal{H}\mathbf{H}\). %Comparing \eqref{Covariance0} and \eqref{Covariance1}, we have \(\mathbf{F}^\mathcal{H}\widetilde{\mathbf{\Lambda}}\mathbf{F}=\mathbf{\Phi}^\mathcal{H}\mathbf{H}\).
+Furthermore, the noiseless part of the covariance matrix is defined as
+\beqa \label{covariance_b}
+\bar{\mathbf{R}}_{yy} =\mathbf{\Phi}^\mathcal{H}\mathbf{H} \mathbf{T}_{\rm zp}  \mathbf{R}_{ss} \mathbf{T}_{\rm zp}^\mathcal{H} \mathbf{H}^\mathcal{H}\mathbf{\Phi},
+\enqa where $\bar{\mathbf{R}}_{yy}$ is of size $N \times N$ and ${\rm rank}(\mathbf{T}_{\rm zp}) = K$. Thus, according to Sylvester’s inequality, the rank of $\bar{\mathbf{R}}_{yy}$ is upper-bounded by \( {\rm rank}(\bar{\mathbf{R}}_{yy}) \le {\rm min}\left({\rm rank}({\mathbf{H}}),{\rm rank}(\mathbf{T}_{\rm zp}) \right) < N\). Hence, there exists the LNS of $\bar{\mathbf{R}}_{yy}$. 
+
+%and let us define ${\rm rank}(\bar{\mathbf{R}}_{yy}) = r_y$. We can assume that the LNS of $\bar{\mathbf{R}}_{yy}$ is spanned by the orthogonal vectors $\mathbf{v}_k$, where $k=1,\dots, N-r_y$. %Let us define $\mathcal{N}=\{1,\dots, \max(L,N-K)\}$.
+
+
+
+
+The zero-padding (ZP) matrix $\mathbf{T}_{\rm zp}$ makes $\mathbf{H} \mathbf{T}_{\rm zp}$ a Toeplitz matrix of size $N \times K$. Recall that the multipath channel order is $L$. When $N-K > L$, the number of null subchirps is greater than \(L\), and the last $N-K-L$ rows of $\mathbf{H} \mathbf{T}_{\rm zp}$ only contain zeros. As a result, we arrive at
+\beqa\label{LNS}
+\mathbf{\Phi}^{\mathcal{H}}\mathbf{H} \mathbf{T}_{\rm zp} =\left[\mathbf{\Phi}^\ast_{\mathcal{S}}\,\, \mathbf{\Phi}^\ast_{\mathcal{N}} \right]
+\left[ \begin{array}{c}
+     \bar{\mathbf{H}} \\
+     \mathbf{0}_{(N-K-L)\times K}
+\end{array} \right],
+\enqa where $\mathbf{\Phi}^\ast_{\mathcal{S}} = \left[\mathbf{\Phi}^{\mathcal{H}}\right]_{:,1:K+L}$ of size $N \times (K+L)$, $\mathbf{\Phi}^\ast_{\mathcal{N}} = \left[\mathbf{\Phi}^{\mathcal{H}}\right]_{:,K+L+1:N}$ of size $N \times (N-K-L)$, and $\bar{\mathbf{H}} = \left[\mathbf{H}\right]_{1:K+L,1:K}$ of size $(K+L) \times K$. According to \eqref{LNS}, we further prove that the null subchirps $\mathbf{\Phi}_{\mathcal{N}} = \left[\mathbf{\Phi}^{T}\right]_{:,K+L+1:N}$ is in the LNS of $\bar{\mathbf{R}}_{yy}$ as
+\beqa
+&&\mathbf{\Phi}^T_{\mathcal{N}}\left[\mathbf{\Phi}^\ast_{\mathcal{S}}\,\, \mathbf{\Phi}^\ast_{\mathcal{N}} \right] \left[ \begin{array}{c}
+     \bar{\mathbf{H}} \\
+     \mathbf{0}_{(N-K-L)\times K}
+\end{array} \right] \nonumber\\
+&=& \left[ \mathbf{0}_{(N-K-L)\times (K+L)}\,\, \mathbf{I}_{N-K-L} \right]\left[ \begin{array}{c}
+     \bar{\mathbf{H}} \\
+     \mathbf{0}_{(N-K-L)\times K}
+\end{array} \right] \nonumber\\
+&=& \mathbf{0}_{(N-K-L) \times K}.
+\enqa
+Define a set of indices $\mathcal{N}_{\phi} = \{K+L+1, \dots, N\}$. With this notation, the CFO $w_0$ can be estimated using the LNS of $\bar{\mathbf{R}}_{yy}$ as
+\beqa\label{w_est}
+\hat{w}_0= \mathop{\arg\min}\limits_{w}  J(w),
+\enqa where the cost function $J(w)$ is defined as
+\beqa\label{Jw}
+    J(w) &=&\sum_{k\in \mathcal{N}_{\phi}}\boldsymbol{\phi}_k^T\mathbf{D}_N^{-1}(w){\mathbf{R}}_{yy}\mathbf{ D}_N(w)\boldsymbol{\phi}_k^\ast, 
+\enqa with $\boldsymbol{\phi}_k=\left[\mathbf{\Phi}^T\right]_{:,k}$ and $\boldsymbol{\phi}^\ast_k = \left[\mathbf{\Phi}^{\mathcal{H}}\right]_{:,k}$. By leveraging $\bar{\mathbf{R}}_{yy}$, the cost function \eqref{Jw} can be rewritten as
+\begin{align}
+    J(w) %\nonumber\\
+=&\sum_{k\in \mathcal{N}_{\phi}}\boldsymbol{\phi}_k^T\mathbf{D}_N(w_0-w)\bar{\mathbf{R}}_{yy}\mathbf{ D}_N(w-w_0)\boldsymbol{\phi}_k^\ast \nonumber\\ 
+&+ \sigma^2(N-K-L),
+\end{align}
+where the equivalent noise term $\sigma^2(N-K-L)$ is the result of $\sigma^2\sum_{k\in \mathcal{N}_{\phi}} \boldsymbol{\phi}_k^T \mathbf{D}_N^{-1}(w)\mathbf{I}_N\mathbf{D}_N(w)\boldsymbol{\phi}_k^\ast$, independent of the candidate CFO \(w\).
+When \(w=w_0\), the result of \(\mathbf{D}_N(w_0-w)\) is an identity matrix, and the cost function is at a minimum, i.e., $J(w_0) = \sigma^2(N-K-L)$. 
+
+\subsection{CFO Identifiability}
+The CFO identifiability issue arises for the CFO estimator \eqref{w_est}, if the following necessary condition is fulfilled for some $w \neq w_0$
+\beqa \label{condition}
+\left\{\boldsymbol{\phi}_{\widetilde{k}}^T\mathbf{D}_N(w_0-w) \right\}_{\widetilde{k} \in  \mathcal{N}_{\phi}} \subset \{\boldsymbol{\phi}_{k}^T\}_{k \in  \mathcal{N}_{\phi}}.
+\enqa The condition in (\ref{condition}) for some $w \neq w_0$ results in multiple minimums. Based on the definition of $\mathbf{\Phi}$ in \eqref{Phi}, it is clear that $\boldsymbol{\phi}_{k}$ is a chirp sequence and $\boldsymbol{\phi}_{k+\Delta k}$ is a circularly shifted version of $\boldsymbol{\phi}_{k}$, where $\boldsymbol{\phi}_{k+\Delta k}$ is obtained by circularly shifted $\boldsymbol{\phi}_{k}$ down (up) by $\Delta k$ samples, with $\Delta k$ being a non-negative (non-positive) integer. Hence, supposing that $k=K+L+\Delta k$, the LNS of the results of $\bar{\mathbf{R}}_{yy}$ can be rewritten as
+\beqa
+\{\boldsymbol{\phi}_{k}^T\}_{k \in  \mathcal{N}_{\phi}} = \{\boldsymbol{\phi}_{K+L+\Delta k}^T\}_{\Delta k =1}^{N-K-L}.
+\enqa Assume a block size of \(N\) with even value as an illustrative example. The $m$-th entry of \(\boldsymbol{\phi}_{K+L+\Delta k}\) is given by:
+\beqa\label{phi_1}
+     &&\left[\boldsymbol{\phi}_{K+L+\Delta k}\right]_m \\
+     &=& \frac{e^{-\frac{j\pi}{4}}}{\sqrt{N}}e^{j\frac{\pi}{N}(K+L+\Delta k-m)^2},\nonumber\\
+     &=& \frac{e^{-\frac{j\pi}{4}}}{\sqrt{N}}e^{j\frac{\pi}{N}(K+L-m)^2 +j\frac{\pi}{N}(\Delta k^2 + 2\Delta k(K+L)-2m\Delta k)},\nonumber\\
+     &&m=1,\dots, N, \Delta k = 1, \dots, N-K-L.\nonumber
+\enqa
+On the other hand, the sequence $\boldsymbol{\phi}_{\widetilde{k}}^T\mathbf{D}_N(w_0-w)$ is also a shifted $\boldsymbol{\phi}_{\widetilde{k}}^T$. Let us define $\widetilde{k}=K+L+\Delta \widetilde{k}$, where $\Delta \widetilde{k} = 1, \dots, N-K-L$. %Let us rewrite the left hand side (l.h.s.) of (\ref{condition}) as follows
+Therefore, the $m$-th entry of $\boldsymbol{\phi}_{\widetilde{k}}^T\mathbf{D}_N(w_0-w)=\boldsymbol{\phi}_{K+L+\Delta \widetilde{k}}^T\mathbf{D}_N(w_0-w)$ 
+%with $\Delta \widetilde{k}=1,\dots, N-K-L$, 
+is given by
+\beqa\label{phi_2}
+ &&\left[\boldsymbol{\phi}_{K+L+\Delta \widetilde{k}}^T\mathbf{D}_N(w_0-w)\right]_m \\
+ %&=&\left[\boldsymbol{\phi}_{k}^T\mathbf{D}_N(w_0-w)\right]_m \nonumber\\
+ &=& \frac{e^{-\frac{j\pi}{4}}}{\sqrt{N}}e^{j(\frac{\pi}{N}(K+L+\Delta \widetilde{k}-m)^2+(w_0-w)m)},\nonumber\\
+ %&=& \frac{e^{-\frac{j\pi}{4}}}{\sqrt{N}}e^{j\frac{\pi}{N}(K+L-m)^2 +j\frac{\pi}{N}(\Delta k^2 + 2\Delta k(K+L)-2m\Delta k)+j(w_0-w)m},\nonumber\\
+ &=& \frac{e^{-\frac{j\pi}{4}}}{\sqrt{N}}e^{j\frac{\pi}{N}(K+L-m)^2}\nonumber\\
+ &&\times e^{j\frac{\pi}{N}(\Delta \widetilde{k}^2 + 2\Delta \widetilde{k}(K+L)-2m \Delta \widetilde{k}+\frac{N}{\pi}(w_0-w)m)},\nonumber\\
+     &&m=1,\dots, N,\Delta \widetilde{k} = 1, \dots, N-K-L.
+     \nonumber
+\enqa Comparing \eqref{phi_1} and \eqref{phi_2}, we observe that $\boldsymbol{\phi}_{K+L+\Delta \widetilde{k}}^T\mathbf{D}_N(w_0-w)$ would belong to the LNS of $\bar{\mathbf{R}}_{yy}$ if and only if the two following conditions are fulfilled at the same time
+\beqa
+&&\frac{\pi}{N}(\Delta \widetilde{k}^2 + 2\Delta \widetilde{k}(K+L))  \,\, {\rm mod} \,\, 2\pi \nonumber\\
+&=& \frac{\pi}{N}(\Delta k^2 + 2\Delta k(K+L)) \,\, {\rm mod} \,\, 2\pi,
+\enqa and 
+\beqa
+&&\frac{2\pi}{N}m \Delta k  \,\, {\rm mod} \,\, 2\pi \nonumber\\
+&=& \left(\frac{2\pi}{N}m \Delta \widetilde{k} + (w_0 -w)m \right) \,\, {\mathrm{mod}} \,\,2\pi,
+\enqa for $\Delta k$ and $ \Delta \widetilde{k} \in \{1,\dots,N-K-L\}$. Recall that $(w_0 - w) \in (-2\pi, 2\pi)$. It is easy to verify that the aforementioned two conditions can be satisfied simultaneously if and only if $\Delta k = \Delta \widetilde{k}$, and
+$(w_0-w) \,\, {\rm mod}\,\, 2\pi =0$, i.e., $w_0= w$. Therefore, the CFO estimator employing the cost function \eqref{Jw} has a unique minimum and the CFO identifiability issue is resolved. 
+%If $h(0)$ and $h(L)$ are non-zero,  cannot be shifted to $\boldsymbol{\phi}_{m}^T$ where $m \neq k$. %the minimum of $J(w)$ is unique, since $\boldsymbol{\phi}_k$ is a chirp and 
+
+We conclude with the following proposition. 
+
+\noindent \textbf{Proposition 1:} For the cost function \(J(w)\) in \eqref{Jw} to have a unique minimum, the insertion of at least \(L+1\) consecutive null subchirps guarantees the CFO acquisition range $[-\pi, \pi)$ for an OCDM system under a multipath channel of order up to \(L\).  % the LNS of channel matrix is spanned by columns of the Fresnel matrix. , and both $h(0)\neq 0$ and $h(L) \neq 0$, 
+
+\subsection{Error Performance}
+
+Next, we explore the performance of the proposed OCDM transmission scheme with consecutive null subchirps (named OCDM-NSC) w.r.t. multipath diversity. A well known fact is that null subcarriers do not affect BER performance in OFDM w.r.t. multipath diversity. This is to say that the multipath diversity is always $1$ for OFDM systems due to the inherent diagonal structure of the equivalent channel. On the other hand, null subchirps affect the OCDM performance w.r.t. multipath diversity differently. The following proposition is herein. 
+
+\noindent \textbf{Proposition 2:}
+Suppose that the number of consecutive null subchirps is greater than or equal to the channel order $L$, i.e., $N-K \ge L$, the OCDM-NSC scheme achieves full multipath diversity by LEs and MLE.
+
+\noindent \textbf{Proof:} 
+There is a link between an OCDM with null subchirps and a ZP-only single carrier (SC) transmission scheme. It turns out that the demodulated OCDM block with null subchirps also assumes the same mathematical form as the ZP-only SC block under multipath channels:
+\beqa
+    \mathbf{z}(i) & =&  \mathbf{\Phi}\mathbf{y}(i) \\
+&=&\mathbf{\Phi}\mathbf{H}\mathbf{\Phi}^\mathcal{H}\mathbf{T}_{\rm zp} \mathbf{s}(i)  +\mathbf{n}(i) \nonumber\\
+    & =& \mathbf{H}\mathbf{T}_{\rm zp}\mathbf{s}(i)+\mathbf{n}(i), \nonumber
+\enqa
+where \(\mathbf{H} = \mathbf{\Phi}\mathbf{H}\mathbf{\Phi}^\mathcal{H}\) by the property of the Fresnel matrix and the circulant matrix. It is observed in \cite{Wang_Optimality_2002} that ZP-only SC transmission with an equivalent tall Toeplitz channel matrix \(\mathbf{H}\mathbf{T}_{zp}\) enables full multipath diversity with both LEs and MLE by providing a better channel matrix condition. OCDM-NSC after demodulation has the equivalent channel model. Therefore, this conclusion applies to OCDM-NSC.  \hfill $\blacksquare$
+
+It is worth noting that the spectral efficiency for the proposed OCDM-NSC is \(K/(N+L)\). When the OCDM-NSC scheme achieves full diversity based on Proposition 2, its spectral efficiency is no greater than \((N-L)/(N+L)\).
+
+\section{Simulations}
+In this section, we illustrate the performance results of the proposed method through simulations. In particular, the covariance matrix \(\mathbf{R}_{yy}\) is calculated empirically across \(N_b\) blocks as:
+\begin{equation} \label{empiricalR}
+    \hat{\mathbf{R}}_{yy}=\frac{1}{N_b}\sum_{i=1}^{N_b}\mathbf{y}(i)\mathbf{y}^\mathcal{H}(i).
+\end{equation} 
+For all the simulations, we set that $N_b = 1000$ in (\ref{empiricalR}). This is a sufficiently large empirical average to approximate \(\mathbf{R}_{yy}\). The SNR is defined as \(E_s/\sigma^2\). Multipath channels of order \(L=2\) with Rayleigh fading coefficients are employed. The block size is \(N=16\). We set \(K=12\) such that $N-K$ (i.e., \(4\)) null subchirps are inserted, and \(N-K-L-1\) (i.e., \(1\)) null subchirps are employed for the proposed CFO estimator. The QPSK modulation is adopted. 
+
+
+
+To evaluate the performance of the CFO estimation and verify its identifiability, we define the mean square error (MSE) as \(\sum_{q=1}^{Q}(w_{0}^{(q)}-\hat{w}_{0}^{(q)})^2/Q\), where \(Q\) is the number of Monte Carlo (MC) runs, and $w_{0}^{(q)}$ and $\hat{w}_{0}^{(q)}$ are the true and estimated CFO for the $q$-th MC run, respectively. 
+%The preamble based CFO estimation methods for OCDM, such as \cite{filomeno_joint_2022}, require the preamble transmission. On the other hand, 
+As our proposed CFO estimator is pilot-free, we opt to use the CP-based CFO estimator \cite{zhang_channel_2022} for baseline comparison instead of the pilot-aided method proposed in \cite{filomeno_joint_2022}. The performance of the CP-based CFO estimator depends on the amount of training data used for cross-correlation, and one can expect the performance to be related with the length of the excessive CP and the number of transmission blocks.
+Here we choose a CP of length \(L_{cp} = 4 > (L+1)\) and 
+\(1000\) transmission blocks for the CP-based CFO estimator for a fair comparison.  %the method in \cite{zhang_channel_2022} uses the CP for the cross-correlation to estimate the CFO.
+
+Although the CP-based CFO estimator \cite{zhang_channel_2022} is in a closed form, it faces the identifiability issue when $|w_0| > \pi/N$. The comparison results are shown in Fig.~1, where three cases of $w_0 \in [-0.05\pi,0.05\pi) $, $w_0 \in [-0.1\pi,0.1\pi)$, and $w_0 \in [-\pi, \pi)$ %(i.e., the full range of the CFO) 
+are presented, respectively. 
+%We illustrate this result by using 1) a controlled small normalized CFO \(0.1\pi\), which is within the frequency acquisition range for the cross-correlation method, and 2) a controlled normalized CFO of \(0.55\pi\), which is now causing the identifiability issue. 
+Due to the data-aided nature of the cross-correlation based methods, the CP-based CFO estimator outperforms the proposed one, in the first case, where $- \pi/N \le w_0 < \pi/N$. In contrast, when $|w_0| > \pi/N$, the CFO identifiability issue arises for the CP-based CFO estimator. The ambiguity error dominates its performance and results in an error floor. Since the identifiability issue is well addressed for the proposed CFO estimator, its MSE does not depend on the true CFO, and the proposed estimator remains robust for the full range of the CFO, i.e., $w_0 \in [-\pi, \pi)$. %The error floor rises with the expanding CFO range, eventually reaching \(0.5 \).
+
+We remark here that calculating the empirical covariance matrix in (18) requires a computational complexity of \(\mathcal{O}(N_bN^2)\). To solve the minimization problem in (9), the complexity scales with \(\mathcal{O}(N_c K N^2)\), where \(N_c\) is the number of candidate CFOs. Thus, the total complexity of the proposed CFO estimator is \(\mathcal{O}((N_cK + N_b)N^2)\). In comparison, the method in [5] has a complexity of \(\mathcal{O}(N_b(L_{cp}-L))\) for the cross-correlation.
+Moreover, our proposed CFO estimator can work well in complement with the CP-based CFO estimator. The proposed method addresses the identifiability issue and achieves a coarse CFO compensation. The CP-based method \cite{zhang_channel_2022} can subsequently carries out a finer tuning. The resulting two-step CFO compensation scheme reaps both high accuracy and robustness against a full range CFO. 
+%It is also worthy pointing out that the two methods can work well in complements. Our proposed method addresses the identifiability issue with a coarse CFO estimation and compensation, followed up with a finer tuning by the CP-based methods in \cite{zhang_channel_2022}. The resulting two-step CFO compensation scheme reaps the benefits of both high accuracy and robustness against a full range CFO. 
+
+\indent Next, we demonstrate the BER performance of the OCDM-NSC system with the proposed CFO estimator in Fig.~2. The LEs specified in \eqref{ZF-FDE} and \eqref{MMSE-FDE} are applied, respectively. The true CFO $w_0$ is randomly generated following a uniform distribution in the range of $[-\pi, \pi)$ for each MC run. The performance of the OFDM system with \(N-K\) null subcarriers using the CFO estimator in \cite{ma_non-data-aided_2001}, and the one of the OCDM system with the CP-based CFO estimation method \cite{zhang_channel_2022} are also shown in Fig.~2, respectively. Evidently from Fig.~2, the null subchirps enable the multipath diversity of the OCDM-NSC system, and all three equalizers for OCDM-NSC collect full diversity, verifying Proposition 2. With this setup, OFDM asymptotically has unit diversity, whereas the performance of OCDM with the CP-based CFO estimation method suffers from the identifiability ambiguity. In this regard, we have also testified that the proposed CFO estimator guarantees the CFO identifiability. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=9cm]{Identifiability_Final_Fig_1.eps}
+    \caption{MSEs of CFO estimators versus SNR.}
+    \label{fig:2}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=9cm]{Identifiability_Final_Fig2.eps}
+    \caption{BER performance with the proposed CFO estimator.}
+    \label{fig:4}
+\end{figure}
+
+
+
+
+\section{Conclusion}
+This paper investigates the CFO identifiability problem in OCDM systems. % and a number of other CFO estimation methods.  
+We propose to insert consecutive null subchirps to facilitate the CFO estimation.  These null subchirps %in the form of the Fresnel domain insertion 
+restore the CFO identifiability by creating channel independent null subspace to overcome adverse channel conditions. A CFO estimator is accordingly proposed to achieve a full acquisition range. It has also been demonstrated that the OCDM system with consecutive null subchirps enables better performance than its plain counterpart. Finally, the CFO identifiability for the proposed estimator is validated through simulations. Performance comparisons are made against other methods to show the advantages of the proposed OCDM-NSC. 
+
+%In terms of potential extensions, it is worthy to note that the approach used in this paper can be readily applied to other popular multicarrier communication systems to restore identifiability. 
+
+\newpage
+
+\begin{thebibliography}{1}
+\bibitem{ouyang_orthogonal_2016}
+X. Ouyang and J. Zhao, “Orthogonal chirp division multiplexing,” \textit{IEEE Trans. Commun.} , vol. 64, no. 9, pp. 3946–3957, Sep. 2016.
+\bibitem{ouyang_chirp_2017}
+X. Ouyang, O. A. Dobre, Y. L. Guan, and J. Zhao, “Chirp spread spectrum toward the Nyquist
+signaling rate-orthogonality condition and applications,” \textit{IEEE Signal Process. Lett.}, vol. 24, no. 10, pp. 1488–1492, Oct. 2017.
+
+\bibitem{Omar_multiuser_2019}
+M. S. Omar and X. Ma, "Designing OCDM-based multi-user transmissions," \textit{in Proc. IEEE GLOBECOM}, Waikoloa,
+HI, USA, Dec. 2019, pp. 1-6.
+
+\bibitem{ouyang_channel_2018}
+X. Ouyang, C. Antony, G. Talli, and P. D. Townsend, “Robust channel estimation for coherent optical orthogonal chirp division multiplexing with pulse compression and noise rejection,” \textit{J. Lightw. Technol.}, vol.
+36, no. 23, pp. 5600–5610, Dec. 2018.
+
+\bibitem{zhang_channel_2022}
+ R. Zhang, Y. Wang, and X. Ma, “Channel estimation for OCDM
+transmissions with carrier frequency offset,” \textit{IEEE Wireless Commun.
+Lett.}, vol. 11, no. 3, pp. 483–487, Mar. 2022.
+
+\bibitem{filomeno_joint_2022}
+ M. L. de Filomeno et al., “Joint channel estimation and Schmidl \&
+Cox synchronization for OCDM-based systems,” \textit{IEEE Commun. Lett.},
+vol. 26, no. 8, pp. 1–5, May 2022.
+
+\bibitem{oliveira_channel_2023}
+L. G. de Oliveira et al., "Discrete-Fresnel domain channel estimation in OCDM-based radar systems," \textit{IEEE Trans. Microw. Theory Tech.}, vol. 71, no. 5, pp. 2258-2275, May 2023,
+  
+%\bibitem{wang_low_2021}X. Wang, X. Shen, F. Hua, and Z. Jiang, “On low-complexity MMSE channel estimation for OCDM systems,” \textit{IEEE Wireless Commun. Lett.}, vol. 10, no. 8, pp. 1697–1701, Aug. 2021.
+
+\bibitem{omar_performance_2021}
+ M. S. Omar and X. Ma, “Performance analysis of OCDM for wireless communications,” \textit{IEEE
+Trans. Wireless Commun.}, vol. 20, no. 7, pp. 4032–4043, Jul. 2021.
+\bibitem{Trivedi}
+V. K. Trivedi and P. Kumar, “Low complexity interference compensation for DFRFT-based OFDM system with CFO,” \textit{IET Communications}, vol. 14, no. 14, pp. 2270–2281,
+Aug. 2020
+
+\bibitem{ma_non-data-aided_2001}
+X. Ma, C. Tepedelenlioglu, G. B. Giannakis,
+and S. Barbarossa, "Non-data-aided carrier
+offset estimator for OFDM with null
+subcarriers," \textit{IEEE J. Select. Areas Commun.},
+vol. 19, no. 12, pp. 2504–2515, Dec. 2001
+\bibitem{Ghogho}
+ M. Ghogho, A. Swami, and G. B. Giannakis, “Optimized
+null-subcarrier selection for CFO estimation in OFDM
+over frequency-selective fading channels,” \textit{in Proc. IEEE GLOBECOM}, San Antonio, TX, Nov., 2001, pp. 202–206.
+
+\bibitem{gao}
+F. Gao and A. Nallanathan, “Identifiability of data-aided carrier-frequency offset estimation over frequency selective channels,” \textit{IEEE
+Trans. Signal Process.}, vol. 54, no. 9, Sep. 2006.
+
+\bibitem{gao2}
+F. Gao, T. Cui, and A. Nallanathan, "Scattered pilots and virtual carriers
+based frequency offset tracking for OFDM systems: Algorithms, identifiability, and performance analysis," \textit{IEEE Trans. Commun.}, vol. 56, no. 4,
+pp. 619–629, Apr. 2008.
+
+
+
+\bibitem{wang_wireless_2000} Z. Wang and G. B. Giannakis, “Wireless multicarrier communications-Where Fourier meets Shannon,” \textit{IEEE Signal Process. Mag.}, vol. 17, no. 3, pp. 29–48, May 2000.
+
+\bibitem{tepedelenlioglu_performance_2005}
+ C. Tepedelenlioglu and Q. Ma, “On the performance of linear
+equalizers for block transmission systems,” \textit{in Proc. IEEE GLOBECOM}, St. Louis, MO, USA, Nov. 2005, pp. 3892–3896.
+
+\bibitem{Wang_Optimality_2002} Z. Wang, X. Ma, and G. B. Giannakis, “Optimality of single-carrier zero-padded block transmissions,” \textit{in Proc. IEEE WCNC}. Orlando, FL, USA, Mar. 2002, pp. 660–664.
+
+\bibitem{Ma2008}
+X. Ma, and W. Zhang, "Fundamental limits of linear equalizers: diversity, capacity, and complexity," \textit{IEEE Trans. Inf. Theory}, vol. 54, no. 8, pp. 3442-3456, Aug. 2008.
+
+  
+\end{thebibliography}
+
+\end{document}

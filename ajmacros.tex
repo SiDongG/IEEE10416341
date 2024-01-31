@@ -1,0 +1,657 @@
+
+
+
+
+
+
+
+\def\argmin{\mathop{\operator@font argmin}}
+\def\argmax{\mathop{\operator@font argmax}}
+\makeatother
+
+\newcommand{\half}{\frac{1}{2}}
+\newcommand{\CM}{{\cC\!\cM}}
+\newcommand{\ZCM}{{\mbox{ZCM}}}
+\newcommand{\Rp}{{R^\prime}}
+\newcommand{\Rpp}{{R^{\prime \prime}}}
+\newcommand{\dist}{\mbox{\rm dist}}
+
+\def\fracN{\textstyle\frac{1}{N}}
+
+\newcommand{\var}{\mbox{\rm var}}
+\newcommand{\cov}{\mbox{\rm cov}}
+\newcommand{\cum}{\mbox{\rm cum}}
+\newcommand{\real}{\mbox{\rm real}}
+\newcommand{\imag}{\mbox{\rm imag}}
+\renewcommand{\Re}{\mbox{\rm Re}}
+\renewcommand{\Im}{\mbox{\rm Im}}
+\newcommand{\eig}{\mbox{\rm eig}}
+\newcommand{\diag}{\mbox{\rm diag}}
+\newcommand{\spann}{\mbox{\rm span}}
+\newcommand{\rank}{\mbox{\rm rank}}
+\newcommand{\Null}{\mbox{\rm Null}}
+%\newcommand{\argmin}{\mbox{\rm arg}\min}
+\newcommand{\Tr}{\mbox{\rm Tr}}
+\newcommand{\tr}{\mbox{\rm tr}}
+\newcommand{\dimm}{\mbox{\rm dim }}
+\newcommand{\sdim}{\mbox{\rm s-dim }}
+\newcommand{\vect}{\mbox{\rm vec}}
+\newcommand{\rvec}{\mbox{\rm vecr}}
+\newcommand{\unvect}{{\vect}^{-1}}
+\newcommand{\vech}{\mbox{\rm vech}}
+\newcommand{\unvech}{{\vech}^{-1}}
+\newcommand{\range}{\mbox{\rm ran}}
+\newcommand{\row}{\mbox{\rm row}}
+\newcommand{\col}{\mbox{\rm col}}
+\newcommand{\sign}{\mbox{\rm sign}}
+\newcommand{\sinc}{\mbox{\rm sinc}}
+\newcommand{\cond}{\mbox{\rm cond}}
+\newcommand{\suchthat}{\hspace{1cm}\mbox{\rm s.t.}\hspace{.5cm}}
+\newcommand{\GE}{{\rm GE}}
+\newcommand{\SINR}{\mbox{\rm SINR}}
+\newcommand{\INSR}{\mbox{\rm INSR}}
+\newcommand{\SIR}{\mbox{\rm SIR}}
+\newcommand{\SNR}{\mbox{\rm SNR}}
+\newcommand{\AsN}{\mbox{{\rm As}\cN}}
+\newcommand{\dr}{\ensuremath{\mathrm{d}}}
+
+\def\cf{{cf.\ }}
+\def\viz{{viz.\ }}
+\def\etal{{et al.\ }}
+\def\eg{{e.g.,\ }}
+\def\ie{{i.e.,\ }}
+
+\def\bm#1{\mbox{\boldmath $#1$}}
+\newcommand{\balpha}{{\bm\alpha}}
+\newcommand{\btau}{{\bm\tau}}
+\newcommand{\bbeta}{{\bm\beta}}
+
+\newcommand{\bea}{\begin{array}}
+\newcommand{\ena}{\end{array}}
+%
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\enq}{\end{equation}}
+
+\newcommand{\beqa}{\begin{eqnarray}}
+\newcommand{\enqa}{\end{eqnarray}}
+
+\newcommand{\beqan}{\begin{eqnarray*}}
+\newcommand{\enqan}{\end{eqnarray*}}
+
+\newcommand{\AL}{\begin{enumerate}}
+\newcommand{\ALE}{\end{enumerate}}
+
+
+\newcommand{\cA}{\ensuremath{\mathcal{A}}}
+\newcommand{\cB}{\ensuremath{\mathcal{B}}}
+\newcommand{\cC}{\ensuremath{\mathcal{C}}}
+\newcommand{\cD}{\ensuremath{\mathcal{D}}}
+\newcommand{\cE}{\ensuremath{\mathcal{E}}}
+\newcommand{\cH}{\ensuremath{\mathcal{H}}}
+\newcommand{\cI}{\ensuremath{\mathcal{I}}}
+\newcommand{\cK}{\ensuremath{\mathcal{K}}}
+\newcommand{\cL}{\ensuremath{\mathcal{L}}}
+\newcommand{\cM}{\ensuremath{\mathcal{M}}}
+\newcommand{\cN}{\ensuremath{\mathcal{N}}}
+\newcommand{\cO}{\ensuremath{\mathcal{O}}}
+\newcommand{\cP}{\ensuremath{\mathcal{P}}}
+\newcommand{\cR}{\ensuremath{\mathcal{R}}}
+\newcommand{\cS}{\ensuremath{\mathcal{S}}}
+\newcommand{\cT}{\ensuremath{\mathcal{T}}}
+\newcommand{\cU}{\ensuremath{\mathcal{U}}}
+\newcommand{\cX}{\ensuremath{\mathcal{X}}}
+\newcommand{\cZ}{\ensuremath{\mathcal{Z}}}
+
+
+\newcommand{\rH}{^{ \raisebox{1pt}{$\rm \scriptscriptstyle H$}}}
+%\newcommand{\rH}{^{*}}
+\newcommand{\rT}{^{ \raisebox{1.2pt}{$\rm \scriptscriptstyle T$}}}
+\newcommand{\rF}{_{ \raisebox{-1pt}{$\rm \scriptstyle F$}}}
+\newcommand{\rE}{{\rm E}}
+
+\newcommand{\Vn}{\Va^{\perp}}
+\newcommand{\Un}{\Ua^{\perp}}
+\newcommand{\bVn}{\bVa^{\perp}}
+\newcommand{\bUn}{\bUa^{\perp}}
+%\newcommand{\VnH}{\Va^{\perp{\rm\scriptscriptstyle *}}}
+%\newcommand{\UnH}{\Ua^{\perp{\rm\scriptscriptstyle *}}}
+\newcommand{\VnH}{\Va^{\perp *}}
+\newcommand{\bVnH}{\bVa^{\perp *}}
+\newcommand{\UnH}{\Ua^{\perp *}}
+\newcommand{\bUnH}{\bUa^{\perp *}}
+\newcommand{\sk}{\sigma_{d+1}}
+\newcommand{\vk}{\bv_{d+1}}
+\newcommand{\uk}{\bu_{d+1}}
+\newcommand{\ukz}{u_{d+1}(z)}
+\newcommand{\Ls}{\Lambda_s}
+\newcommand{\Ln}{\Lambda_n}
+\newcommand{\Lo}{\tilde{\Lambda}}
+\newcommand{\Loh}{\tilde{\Lambda}^{1/2}}
+\newcommand{\Las}{\hat{\Lambda}_s}
+\newcommand{\Wh}{W^{1/2}}
+\newcommand{\bRopt}{\bR^{\mbox{\scriptsize opt}}}
+\newcommand{\Gammaopt}{\Gamma^{\mbox{\scriptsize opt}}}
+\newcommand{\bGammaopt}{\bGamma^{\mbox{\scriptsize opt}}}
+\newcommand{\Wlo}{W_{1,\mbox{\scriptsize opt}}}
+
+
+% anti-diagonal dots
+\def\addots{\mathinner{
+    \mkern1mu\raise0pt\vbox{\kern7pt\hbox{.}}
+    \mkern2mu\raise4pt\hbox{.}
+    \mkern2mu\raise7pt\hbox{.}
+    \mkern1mu}}
+
+% steep diagonal dots
+\def\sddots{\mathinner{
+    \mkern.8mu\raise7pt\hbox{.}
+    \mkern.8mu\raise4pt\hbox{.}
+    \mkern.8mu\raise0pt\vbox{\kern7pt\hbox{.}}
+    \mkern1mu}}
+
+% steep anti-diagonal dots
+\def\saddots{\mathinner{
+    \mkern.2mu\raise0pt\vbox{\kern7pt\hbox{.}}
+    \mkern.2mu\raise4pt\hbox{.}
+    \mkern.2mu\raise7pt\hbox{.}
+    \mkern1mu}}
+
+
+\newcommand{\cHt}{{\tilde{\cal H}}}
+
+
+\newcommand{\ba}{{\ensuremath{\mathbf{a}}}}
+\newcommand{\bb}{{\ensuremath{\mathbf{b}}}}
+\newcommand{\bc}{{\ensuremath{\mathbf{c}}}}
+\newcommand{\bd}{{\ensuremath{\mathbf{d}}}}
+\newcommand{\be}{{\ensuremath{\mathbf{e}}}}
+\newcommand{\bff}{{\ensuremath{\mathbf{f}}}}
+\newcommand{\bg}{{\ensuremath{\mathbf{g}}}}
+\newcommand{\bh}{{\ensuremath{\mathbf{h}}}}
+\newcommand{\bn}{{\ensuremath{\mathbf{n}}}}
+\newcommand{\bp}{{\ensuremath{\mathbf{p}}}}
+\newcommand{\bpa}{{\ensuremath{\mathbf{\hat{p}}}}}
+\newcommand{\bq}{{\ensuremath{\mathbf{q}}}}
+\newcommand{\br}{{\ensuremath{\mathbf{r}}}}
+\newcommand{\bs}{{\ensuremath{\mathbf{s}}}}
+\newcommand{\bt}{{\ensuremath{\mathbf{t}}}}
+\newcommand{\bu}{{\ensuremath{\mathbf{u}}}}
+\newcommand{\bv}{{\ensuremath{\mathbf{v}}}}
+\newcommand{\bw}{{\ensuremath{\mathbf{w}}}}
+\newcommand{\bx}{{\ensuremath{\mathbf{x}}}}
+\newcommand{\by}{{\ensuremath{\mathbf{y}}}}
+\newcommand{\bz}{{\ensuremath{\mathbf{z}}}}
+\newcommand{\bj}{{\ensuremath{\mathbf{j}}}}
+
+\newcommand{\bA}{{\ensuremath{\mathbf{A}}}}
+\newcommand{\bB}{{\ensuremath{\mathbf{B}}}}
+\newcommand{\bC}{{\ensuremath{\mathbf{C}}}}
+\newcommand{\bD}{{\ensuremath{\mathbf{D}}}}
+\newcommand{\bE}{{\ensuremath{\mathbf{E}}}}
+\newcommand{\bF}{{\ensuremath{\mathbf{F}}}}
+\newcommand{\bG}{{\ensuremath{\mathbf{G}}}}
+\newcommand{\bH}{{\ensuremath{\mathbf{H}}}}
+\newcommand{\bI}{{\ensuremath{\mathbf{I}}}}
+\newcommand{\bJ}{{\ensuremath{\mathbf{J}}}}
+\newcommand{\bK}{{\ensuremath{\mathbf{K}}}}
+\newcommand{\bL}{{\ensuremath{\mathbf{L}}}}
+\newcommand{\bM}{{\ensuremath{\mathbf{M}}}}
+\newcommand{\bN}{{\ensuremath{\mathbf{N}}}}
+\newcommand{\bO}{{\ensuremath{\mathbf{O}}}}
+\newcommand{\bP}{{\ensuremath{\mathbf{P}}}}
+\newcommand{\bQ}{{\ensuremath{\mathbf{Q}}}}
+\newcommand{\bR}{{\ensuremath{\mathbf{R}}}}
+\newcommand{\bS}{{\ensuremath{\mathbf{S}}}}
+\newcommand{\bT}{{\ensuremath{\mathbf{T}}}}
+\newcommand{\bU}{{\ensuremath{\mathbf{U}}}}
+\newcommand{\bV}{{\ensuremath{\mathbf{V}}}}
+\newcommand{\bW}{{\ensuremath{\mathbf{W}}}}
+\newcommand{\bX}{{\ensuremath{\mathbf{X}}}}
+\newcommand{\bY}{{\ensuremath{\mathbf{Y}}}}
+\newcommand{\bZ}{{\ensuremath{\mathbf{Z}}}}
+
+
+\newcommand{\da}{\ensuremath{\mathbf{\hat{d}}}}
+\newcommand{\sa}{\ensuremath{\mathbf{\hat{s}}}}
+\newcommand{\ea}{\ensuremath{\mathbf{\hat{e}}}}
+\newcommand{\xa}{\ensuremath{\mathbf{\hat{x}}}}
+\newcommand{\ya}{\ensuremath{\mathbf{\hat{y}}}}
+
+\newcommand{\Aa}{\hat{A}}
+\newcommand{\Ca}{\hat{C}}
+\newcommand{\Ea}{\hat{E}}
+\newcommand{\Ha}{\hat{H}}
+\newcommand{\Lah}{\hat{\Lambda}}
+\newcommand{\Ma}{\hat{M}}
+\newcommand{\Na}{\hat{N}}
+\newcommand{\Pa}{\hat{P}}
+\newcommand{\Qa}{\hat{Q}}
+\newcommand{\Ra}{\hat{R}}
+\newcommand{\Sa}{\hat{\Sigma}}
+\newcommand{\Sn}{\hat{\Sigma}^\perp}
+\newcommand{\Ta}{\hat{T}}
+\newcommand{\Ua}{\hat{U}}
+\newcommand{\Va}{\hat{V}}
+\newcommand{\Xa}{\hat{X}}
+\newcommand{\Ya}{\hat{Y}}
+\newcommand{\Za}{\hat{Z}}
+\newcommand{\ua}{\hat{u}}
+
+\newcommand{\bAa}{\ensuremath{\mathbf{\hat{A}}}}
+\newcommand{\bBa}{\ensuremath{\mathbf{\hat{B}}}}
+\newcommand{\bCa}{\ensuremath{\mathbf{\hat{C}}}}
+\newcommand{\bEa}{\ensuremath{\mathbf{\hat{E}}}}
+\newcommand{\bHa}{\ensuremath{\mathbf{\hat{H}}}}
+\newcommand{\bLah}{\ensuremath{\mathbf{\hat{\bLambda}}}}
+\newcommand{\bMa}{\ensuremath{\mathbf{\hat{M}}}}
+\newcommand{\bNa}{\ensuremath{\mathbf{\hat{N}}}}
+\newcommand{\bPa}{\ensuremath{\mathbf{\hat{P}}}}
+\newcommand{\bQa}{\ensuremath{\mathbf{\hat{Q}}}}
+\newcommand{\bRa}{\ensuremath{\mathbf{\hat{R}}}}
+% \newcommand{\bSa}{\hat{\bSigma}}
+\newcommand{\bSn}{{\bSigma}^\perp}
+\newcommand{\bTa}{\ensuremath{\mathbf{\hat{T}}}}
+\newcommand{\bUa}{\ensuremath{\mathbf{\hat{U}}}}
+\newcommand{\bVa}{\ensuremath{\mathbf{\hat{V}}}}
+\newcommand{\bWa}{\ensuremath{\mathbf{\hat{W}}}}
+\newcommand{\bXa}{\ensuremath{\mathbf{\hat{X}}}}
+\newcommand{\bYa}{\ensuremath{\mathbf{\hat{Y}}}}
+\newcommand{\bZa}{\ensuremath{\mathbf{\hat{Z}}}}
+
+\newcommand{\baa}{\ensuremath{\mathbf{\hat{a}}}}
+\newcommand{\bua}{\ensuremath{\mathbf{\hat{u}}}}
+\newcommand{\bta}{\ensuremath{\mathbf{\hat{t}}}}
+\newcommand{\btac}{\ensuremath{\bar{\mathbf{\hat{t}}}}}
+\newcommand{\bwa}{\ensuremath{\mathbf{\hat{w}}}}
+\newcommand{\bya}{\ensuremath{\mathbf{\hat{y}}}}
+
+% bar denotes conjugate
+% tilde denotes noise
+\newcommand{\Ac}{\bar{A}}
+\newcommand{\Mc}{\bar{M}}
+\newcommand{\Vc}{\bar{V}}
+\newcommand{\Uc}{\bar{U}}
+\newcommand{\Wc}{\bar{W}}
+\newcommand{\Xtc}{\bar{\tilde{X}}}
+\newcommand{\btc}{\bar{{\bf t}}}
+\newcommand{\bat}{\tilde{{\bf a}}}
+\newcommand{\bxt}{\tilde{{\bf x}}}
+\newcommand{\bpt}{\tilde{{\bf p}}}
+\newcommand{\xt}{\tilde{{\bf x}}}
+\newcommand{\xtc}{\bar{\tilde{{\bf x}}}}
+\newcommand{\Gt}{\tilde{G}}
+\newcommand{\Pt}{\tilde{P}}
+\newcommand{\Kt}{\tilde{K}}
+\newcommand{\Xt}{\tilde{X}}
+\newcommand{\Rt}{\tilde{R}}
+\newcommand{\Ct}{\tilde{C}}
+\newcommand{\Et}{\tilde{E}}
+
+\newcommand{\bAc}{\ensuremath{\mathbf{\bar{A}}}}
+\newcommand{\bCc}{\ensuremath{\mathbf{\bar{C}}}}
+\newcommand{\bDc}{\ensuremath{\mathbf{\bar{D}}}}
+\newcommand{\bMc}{\ensuremath{\mathbf{\bar{M}}}}
+\newcommand{\bRc}{\ensuremath{\mathbf{\bar{R}}}}
+\newcommand{\bTc}{\ensuremath{\mathbf{\bar{T}}}}
+\newcommand{\bVc}{\ensuremath{\mathbf{\bar{V}}}}
+\newcommand{\bUc}{\ensuremath{\mathbf{\bar{U}}}}
+\newcommand{\bWc}{\ensuremath{\mathbf{\bar{W}}}}
+\newcommand{\bXtc}{\ensuremath{\mathbf{\bar{\tilde{X}}}}}
+\newcommand{\bGt}{\ensuremath{\mathbf{\tilde{G}}}}
+\newcommand{\bPt}{\ensuremath{\mathbf{\tilde{P}}}}
+\newcommand{\bKt}{\ensuremath{\mathbf{\tilde{K}}}}
+\newcommand{\bXt}{\ensuremath{\mathbf{\tilde{X}}}}
+\newcommand{\bRt}{\ensuremath{\mathbf{\tilde{R}}}}
+\newcommand{\bCt}{\ensuremath{\mathbf{\tilde{C}}}}
+\newcommand{\bEt}{\ensuremath{\mathbf{\tilde{E}}}}
+
+\newcommand{\Xac}{\bar{\hat{X}}}
+\newcommand{\Xc}{\bar{X}}
+\newcommand{\bXac}{\ensuremath{\mathbf{\bar{\hat{X}}}}}
+\newcommand{\bXc}{\ensuremath{\mathbf{\bar{X}}}}
+
+\newcommand{\uc}{\bar{u}}
+\newcommand{\buc}{\bar{\bu}}
+\newcommand{\ucv}{\undertilde{\bar{u}}}
+\newcommand{\bucv}{\undertilde{\bar{\bu}}}
+\newcommand{\bUcv}{\undertilde{\bUc}}
+\newcommand{\bLambdav}{\undertilde{\bLambda}}
+
+\newcommand{\xc}{\bar{x}}
+\newcommand{\sbar}{\bar{s}}
+\newcommand{\bac}{\ensuremath{\mathbf{\bar{a}}}}
+\newcommand{\bdc}{\ensuremath{\mathbf{\bar{d}}}}
+\newcommand{\bec}{\ensuremath{\mathbf{\bar{e}}}}
+\newcommand{\bgc}{\ensuremath{\mathbf{\bar{g}}}}
+\newcommand{\bnc}{\ensuremath{\mathbf{\bar{n}}}}
+\newcommand{\bxc}{\ensuremath{\mathbf{\bar{x}}}}
+\newcommand{\bwc}{\ensuremath{\mathbf{\bar{w}}}}
+\newcommand{\bwt}{\ensuremath{\mathbf{\tilde{t}}}}
+\newcommand{\bst}{\ensuremath{\mathbf{\tilde{s}}}}
+\newcommand{\bsc}{\ensuremath{\mathbf{\bar{s}}}}
+
+% dots
+\newcommand{\bIdot}{\ensuremath{\mathbf{\dot{I}}}}
+
+% whitened denoted by underline
+\def\baw{\underline{\ba}}
+\def\bacw{\underline{\bac}}
+\def\baww{\underline{\underline{\ba}}}
+\def\bacww{\underline{\underline{\bac}}}
+\def\Aw{\underline{A}}
+\def\Acw{\underline{\Ac}}
+\def\Cw{\underline{C}}
+\def\Ctw{\underline{\Ct}}
+\def\Nw{\underline{N}}
+\def\Gw{\underline{G}}
+\def\Pw{\underline{P}}
+\def\Rw{\underline{R}}
+\def\Ww{\underline{W}}
+\def\Xw{\underline{X}}
+\def\Xtw{\underline{\Xt}}
+\def\bxtw{\underline{\bxt}}
+\def\xtw{\underline{\bxt}}
+\def\baw{\underline{\ba}}
+\def\bxw{\underline{\bx}}
+\def\bww{\underline{\bw}}
+\def\byw{\underline{\by}}
+\newcommand{\Gtw}{\underline{\Gt}}
+\newcommand{\Ptw}{\underline{\Pt}}
+\newcommand{\Rtw}{\underline{\Rt}}
+\def\Xww{\underline{\underline{X}}}
+\def\Xtww{\underline{\underline{\Xt}}}
+\def\Ctww{\underline{\underline{\Ct}}}
+\def\Aww{\underline{\underline{A}}}
+\def\Acww{\underline{\underline{\Ac}}}
+\def\Nww{\underline{\underline{N}}}
+\def\Rtww{\underline{\underline{\Rt}}}
+\def\Ktww{\underline{\underline{\Kt}}}
+\def\Kww{\underline{\underline{K}}}
+
+\def\bAw{\underline{\bA}}
+\def\bAcw{\underline{\bAc}}
+\def\bCw{\underline{\bC}}
+\def\bCtw{\underline{\bCt}}
+\def\bCaw{\underline{\bCa}}
+\def\bNw{\underline{\bN}}
+\def\bGw{\underline{\bG}}
+\def\bPw{\underline{\bP}}
+\def\bRw{\underline{\bR}}
+\def\bWw{\underline{\bW}}
+\def\bXw{\underline{\bX}}
+\def\bXtw{\underline{\bXt}}
+\def\bYw{\underline{\bY}}
+\newcommand{\bGtw}{\underline{\bGt}}
+\newcommand{\bPtw}{\underline{\bPt}}
+\newcommand{\bRtw}{\underline{\bRt}}
+\def\bXww{\underline{\underline{\bX}}}
+\def\bXtww{\underline{\underline{\bXt}}}
+\def\bCtww{\underline{\underline{\bCt}}}
+\def\bAaw{\underline{\bAa}}
+\def\bAww{\underline{\underline{\bA}}}
+\def\bAcww{\underline{\underline{\bAc}}}
+\def\bNww{\underline{\underline{\bN}}}
+\def\bRtww{\underline{\underline{\bRt}}}
+\def\bKtww{\underline{\underline{\bKt}}}
+\def\bKww{\underline{\underline{\bK}}}
+
+% composite denoted by undertilde
+%\usepackage{amsmath}
+
+% copied from amsmath: (don't load it all because destroys bold Sigma...)
+\makeatletter
+\def\setboxz@h{\setbox\z@\hbox}
+\def\wdz@{\wd\z@}
+\def\boxz@{\box\z@}
+\def\underset#1#2{\binrel@{#2}%
+  \binrel@@{\mathop{\kern\z@#2}\limits_{#1}}}
+\def\binrel@#1{\begingroup
+  \setboxz@h{\thinmuskip0mu
+    \medmuskip\m@ne mu\thickmuskip\@ne mu
+    \setbox\tw@\hbox{$#1\m@th$}\kern-\wd\tw@
+    ${}#1{}\m@th$}%
+  \edef\@tempa{\endgroup\let\noexpand\binrel@@
+    \ifdim\wdz@<\z@ \mathbin
+    \else\ifdim\wdz@>\z@ \mathrel
+    \else \relax\fi\fi}%
+  \@tempa
+}
+\let\binrel@@\relax%
+\makeatother
+
+% best choice:
+\def\undertilde#1{\smash{\underset{^{\mbox{\~{}}}}{#1}}\vphantom{#1}}
+
+
+\newcommand{\Av}{\ensuremath{\undertilde{A}}}
+\newcommand{\bAv}{\ensuremath{\mathbf{\undertilde{\bA}}}}
+\newcommand{\Dv}{\ensuremath{\undertilde{D}}}
+\newcommand{\bDv}{\ensuremath{\mathbf{\undertilde{\bD}}}}
+\newcommand{\bPv}{\ensuremath{\mathbf{\undertilde{\bP}}}}
+\newcommand{\Uv}{\ensuremath{\undertilde{U}}}
+\newcommand{\bUv}{\ensuremath{\mathbf{\undertilde{\bU}}}}
+\newcommand{\bUva}{\ensuremath{\mathbf{\undertilde{\bUa}}}}
+\newcommand{\bLvah}{\ensuremath{\mathbf{\undertilde{\bLah}}}}
+\newcommand{\bVv}{\ensuremath{\mathbf{\undertilde{\bV}}}}
+\newcommand{\bSigmav}{\ensuremath{\mathbf{\undertilde{\bSigma}}}}
+\newcommand{\sigmav}{\ensuremath{\undertilde{\sigma}}}
+\newcommand{\av}{\ensuremath{\undertilde{a}}}
+\newcommand{\bav}{{\ensuremath{\mathbf{\undertilde{\ba}}}}}
+\newcommand{\bcv}{{\ensuremath{\mathbf{\undertilde{\bc}}}}}
+\newcommand{\bdv}{{\ensuremath{\mathbf{\undertilde{\bd}}}}}
+\newcommand{\bnv}{{\ensuremath{\mathbf{\undertilde{\bn}}}}}
+\newcommand{\bsv}{{\ensuremath{\mathbf{\undertilde{\bs}}}}}
+
+
+\newcommand{\Uav}{\ensuremath{\undertilde{\Ua}}}
+\newcommand{\bUav}{\ensuremath{\mathbf{\undertilde{\bUa}}}}
+\newcommand{\bAcv}{\ensuremath{\mathbf{\undertilde{\bAc}}}}
+\newcommand{\bncv}{\ensuremath{\mathbf{\undertilde{\bnc}}}}
+\newcommand{\bscv}{\ensuremath{\mathbf{\undertilde{\bsc}}}}
+
+\newcommand{\Pap}{\bPv_{\bA}^\perp}
+\newcommand{\Papt}{\bPv_{\bA(\btheta)}^\perp}
+
+\def\bones{{\bf 1}}
+\def\bzero{{\bf 0}}
+
+\def\circone{
+    {\ooalign{
+   \smash{\hskip3.0pt\raise0pt\hbox{\small $1$}}\vphantom{}\crcr
+   \hbox{$\bigcirc$}
+    }}
+    }
+\def\circtwo{
+    {\ooalign{
+   \smash{\hskip3.0pt\raise0pt\hbox{\small $2$}}\vphantom{}\crcr
+   \hbox{$\bigcirc$}
+    }}
+    }
+\def\circthree{
+    {\ooalign{
+   \smash{\hskip3.0pt\raise0pt\hbox{\small $3$}}\vphantom{}\crcr
+   \hbox{$\bigcirc$}
+    }}
+    }
+
+\newcommand{\Xap}{\Xa^{+}}
+\newcommand{\Yap}{\Ya^{+}}
+
+\newcommand{\Xd}{X^{\dagger}}
+\newcommand{\Xdd}{X^{\ddagger}}
+\newcommand{\Wd}{W^{\dagger}}
+\newcommand{\Wdd}{W^{\ddagger}}
+\newcommand{\Ld}{L^{\dagger}}
+
+\newcommand{\Gi}{\Gamma^{-\!1}}
+\newcommand{\Yi}{Y_{[i]}}
+\newcommand{\Ui}{U_{[i]}}
+\newcommand{\Zi}{Z^{-\!1}}
+
+\newcommand{\Xk}{X_{[k]}}
+\newcommand{\Yk}{Y_{[k]}}
+\newcommand{\Uk}{U_{[k]}}
+
+\newcommand{\ET}{\tilde{E}_T}
+\newcommand{\HT}{\tilde{H}_T}
+\newcommand{\KT}{\tilde{K}_T}
+\newcommand{\KTr}{\tilde{K}_{Tr}}
+\newcommand{\TT}{\tilde{T}_T}
+\newcommand{\VT}{\tilde{V}_T}
+\newcommand{\Hu}{\HT^{\scriptstyle \uparrow}}
+\newcommand{\Hl}{\HT^{\scriptstyle \leftarrow}}
+\newcommand{\LmZi}{\cL^m Z^{-\!1}}
+
+\newcommand{\bXh}{{\hat{\bX}}}
+\newcommand{\cHh}{{\hat{\cH}}}
+\newcommand{\bQh}{{\hat{\bQ}}}
+
+
+
+%  []
+% \def\qed{\hfill {$\Box$}}
+% The tex-book p.106: adapted `signed' macro to ensure qed always at end of line
+\def\qed{{\unskip\nobreak\hfil\penalty50
+    \hskip2em\hbox{}\nobreak\hfil{$\Box$}
+    \parfillskip=0pt \vspace{2ex}\par}}
+
+\newcommand{\nsimeq}{\stackrel { N}{\simeq} }
+
+\newcommand{\sqperp}{^{[\perp]}}
+\newcommand{\sqperpto}{{\mathbin{\;[\perp]\;}}}
+%  [+] and [-]
+\def\sqplus{\mathbin{
+    {\ooalign{\hfil\raise.3ex\hbox{\scriptsize
+    +}\hfil\crcr\mathhexbox274\crcr\mathhexbox275}}
+    }}
+\def\sqminus{\mathbin{
+    {\ooalign{\hfil\raise.3ex\hbox{\scriptsize
+    --}\hfil\crcr\mathhexbox274\crcr\mathhexbox275}}
+    }}
+
+
+
+% The set of complex numbers
+\def\IC{{
+   \mathord{
+      \hbox to 0em{
+     \hskip-4pt
+         \ooalign{
+       \smash{\hskip1.9pt\raise2.6pt\hbox{$\scriptscriptstyle |$}}\crcr
+       \smash{\hbox{\rm\sf C}} }
+     \hidewidth}
+      \phantom{\hbox{\rm\sf C}}
+} }}
+% The set of natural numbers
+\def\IN{
+    {\ooalign{
+   \smash{\hskip2.2pt\raise1.5pt\hbox{$\scriptscriptstyle |$}}\vphantom{}\crcr
+   \hbox{\sf N}
+    }}
+    }
+% The set of integers
+\def\IZ{
+    {\ooalign{
+   \smash{\hskip1.9pt\raise0pt\hbox{$\sf Z$}}\vphantom{}\crcr
+   \hbox{\sf Z}
+    }}
+    }
+% The set of reals
+\def\IR{
+    {\ooalign{
+   \smash{\hskip2.2pt\raise1.5pt\hbox{$\scriptscriptstyle |$}}\vphantom{}\crcr
+   \smash{\hskip2.2pt\raise3.3pt\hbox{$\scriptscriptstyle |$}}\vphantom{}\crcr
+   \hbox{\sf R}
+    }}
+    }
+
+% hacks for bold \Sigma and \Theta in TimesRoman:
+\iffalse
+%\iftrue
+    % borrow from CM
+    \DeclareMathAlphabet{\mathcmb}{OT1}{cmr}{bx}{n}
+
+    \def\bSigma{\ensuremath{\mathcmb{\Sigma}}}
+    \def\blambda{\ensuremath{\mathcmb{\lambda}}}
+    \def\bLambda{\ensuremath{\mathcmb{\Lambda}}}
+    \def\bGamma{\ensuremath{\mathcmb{\Gamma}}}
+    \def\bPhi{\ensuremath{\mathcmb{\Phi}}}
+    \def\bTheta{\ensuremath{\mathcmb{\Theta}}}
+    \def\bOmega{\ensuremath{\mathcmb{\Omega}}}
+    \def\btheta{\ensuremath{\mathcmb{\theta}}}
+    \def\bDelta{\ensuremath{\mathcmb{\Delta}}}
+
+    \def\bSa{\ensuremath{\mathcmb{\hat{\Sigma}}}}
+
+    \newcommand{\bthetaa}{\ensuremath{\mathcmb{\hat{\btheta}}}}
+\else
+    % use definition from ams (doesn't work with times+m)
+    \usepackage{amsbsy}
+    \newcommand{\bSigma}{{\ensuremath{\boldsymbol{\Sigma}}}}
+    \newcommand{\blambda}{{\ensuremath{\boldsymbol{\lambda}}}}
+    \newcommand{\bLambda}{{\ensuremath{\boldsymbol{\Lambda}}}}
+    \newcommand{\bGamma}{{\ensuremath{\boldsymbol{\Gamma}}}}
+    \newcommand{\bPhi}{{\ensuremath{\boldsymbol{\Phi}}}}
+    \newcommand{\bTheta}{{\ensuremath{\boldsymbol{\Theta}}}}
+    \newcommand{\bOmega}{{\ensuremath{\boldsymbol{\Omega}}}}
+    \newcommand{\btheta}{{\ensuremath{\boldsymbol{\theta}}}}
+    \newcommand{\bDelta}{{\ensuremath{\boldsymbol{\Delta}}}}
+
+    \newcommand{\bSa}{{\ensuremath{\boldsymbol{\hat{\Sigma}}}}}
+
+    \newcommand{\bthetaa}{{\ensuremath{\boldsymbol{\hat{\btheta}}}}}
+\fi
+
+\def\bdot{{\scriptscriptstyle\bullet}}
+
+
+
+% Indented 'list'
+% Usage: \SI
+%          blabla
+%        \EI
+
+\def\indlist{\list{\mbox{}}{\topsep 0pt
+    \itemsep 5pt \parsep 0.3ex plus .25pt \parskip 0pt
+    \labelwidth 20pt \itemindent 0pt \labelsep 2pt \listparindent 0pt
+    \leftmargin 22pt }\item}
+    \let\endindlist\endlist
+\newcommand{\SI}{\begin{indlist}}
+\newcommand{\EI}{\end{indlist}}
+
+
+%
+% Special list with boxes
+% Usage: \begin{descr}
+%        \item  blabla
+%        \item  blabla
+%        \end{descr}
+\def\descr{\list{\mbox{$\Box$}}{\topsep 5pt plus .25pt
+    \itemsep 5pt \parsep 0.3ex plus .25pt
+    \labelwidth 12pt \itemindent 0pt \labelsep 3pt \listparindent 0pt
+    \leftmargin 15pt }}
+    \let\enddescr\endlist
+
+
+% Hanging indent after introline
+% usage:
+%    \hanglines{where\ }
+%    $U$ is block lower and unitary,\\
+%    $V$ is block upper and isometric, and\\
+%    $T_0$ is upper with upper inverse.
+%
+\def\hanglines#1{
+    \setbox1=\hbox{#1}%
+    \hangindent=\wd1\hangafter=0
+    \hskip -\hangindent
+    \makebox[\hangindent]{\box1}\ignorespaces%
+}
+
+\def\dashlist{\list{\mbox{--}}{\topsep 5pt plus .25pt
+    \itemsep 5pt \parsep 0.3ex plus .25pt
+    \labelwidth 12pt \itemindent 0pt \labelsep 3pt \listparindent 0pt
+    \leftmargin 15pt }}
+    \let\enddashlist\endlist
+%
+\newcommand{\DL}{\begin{dashlist}}
+\newcommand{\DLE}{\end{dashlist}}
